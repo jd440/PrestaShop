@@ -338,6 +338,10 @@ class OrderSlipCore extends ObjectModel
 
 		$order_slip->amount = $order_slip->total_products_tax_incl;
 		$order_slip->shipping_cost_amount = $order_slip->total_shipping_tax_incl;
+	        
+	        if ($shipping_cost !== false) {
+	            $order_slip->amount += $order_slip->shipping_cost_amount;
+	        }
 
 		if (!$order_slip->add())
 			return false;
