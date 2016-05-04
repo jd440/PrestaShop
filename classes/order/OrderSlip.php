@@ -254,10 +254,6 @@ class OrderSlipCore extends ObjectModel
 		$order_slip->total_shipping_tax_incl = 0;
 		$order_slip->partial = 0;
 
-		$order_slip->amount = 0;
-		$order_slip->total_products_tax_excl = 0;
-		$order_slip->total_products_tax_incl = 0;
-		
 		if ($shipping_cost !== false)
 		{
 			$order_slip->shipping_cost = true;
@@ -271,12 +267,13 @@ class OrderSlipCore extends ObjectModel
 				$order_slip->total_shipping_tax_incl = Tools::ps_round($tax_calculator->addTaxes($order_slip->total_shipping_tax_excl), _PS_PRICE_DISPLAY_PRECISION_);
 			else
 				$order_slip->total_shipping_tax_incl = $order_slip->total_shipping_tax_excl;
-				
-			$order_slip->amount = $order_slip->total_shipping_tax_incl;
 		}
 		else
 			$order_slip->shipping_cost = false;
 
+		$order_slip->amount = 0;
+		$order_slip->total_products_tax_excl = 0;
+		$order_slip->total_products_tax_incl = 0;
 
 		foreach ($product_list as &$product)
 		{
@@ -341,6 +338,10 @@ class OrderSlipCore extends ObjectModel
 
 		$order_slip->amount = $order_slip->total_products_tax_incl;
 		$order_slip->shipping_cost_amount = $order_slip->total_shipping_tax_incl;
+	        
+	        if ($shipping_cost !== false) {
+	            $order_slip->amount += $order_slip->shipping_cost_amount;
+	        }
 
 		if (!$order_slip->add())
 			return false;
