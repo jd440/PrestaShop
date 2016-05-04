@@ -253,7 +253,7 @@ class OrderSlipCore extends ObjectModel
 		$order_slip->total_shipping_tax_excl = 0;
 		$order_slip->total_shipping_tax_incl = 0;
 		$order_slip->partial = 0;
-
+		
 		if ($shipping_cost !== false)
 		{
 			$order_slip->shipping_cost = true;
